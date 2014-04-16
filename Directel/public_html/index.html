@@ -12,7 +12,9 @@
 //
 $(function(){
     app.initialize();
-    alert('ready');
+    $.post('http://directel.mx/acciones/serviceTest',function(e){
+        alert(e);
+    })
 });
 
 
