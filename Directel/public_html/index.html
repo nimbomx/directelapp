@@ -12,8 +12,12 @@
 //
 $(function(){
     app.initialize();
-    $.post('http://directel.mx/acciones/serviceTest',function(e){
-        alert(e);
+    $.post('http://directel.mx/acciones/serviceCiudades',function(e){
+        var obj = jQuery.parseJSON(e);
+        for (var i in obj){
+          
+            $('#ciudadCanvas').append('<div>'+obj[i].nombre+'</div>');
+        }
     })
 });
 
@@ -23,6 +27,6 @@ $(function(){
   <body style="background: url(img/bg.png); text-align: center;">
 
 <img style=" margin-top: 70px; max-width: 100%; width: 200px;" src="img/logo_directel.png">
-
+<div id="ciudadCanvas"></div>
   </body>
 </html>
