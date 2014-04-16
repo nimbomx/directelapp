@@ -3,13 +3,13 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.phonegap.newmephotoapp"
+        id        = "mx.nimbo.directel"
         version   = "1.0.0">
 
-    <name>newme - photo app</name>
+    <name>direcTEL</name>
 
     <description>
-        Aplicación de gestión de fotografias, para el SPA newme
+        El directorio de negocios de mayor vanguardia en San Luis Potosí
     </description>
 
     <author href="https://nimbo.mx" email="ernesto@nimbo.mx">
