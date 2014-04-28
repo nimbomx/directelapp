@@ -1,32 +1,43 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>DirecTEL</title>
+    <head>
+        <title>DirecTEL</title>
 
-    <script type="text/javascript" charset="utf-8" src="phonegap-1.2.0.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
-    <script type="text/javascript" charset="utf-8" src="js/index.js"></script>
-     <link rel="stylesheet" type="text/css" href="css/index.css">
-    <script type="text/javascript" charset="utf-8">
-// A button will call this function
-//
-$(function(){
-    app.initialize();
-    $.post('http://directel.mx/acciones/serviceCiudades',function(e){
-        var obj = jQuery.parseJSON(e);
-        for (var i in obj){
-          
-            $('#ciudadCanvas').append('<div>'+obj[i].nombre+'</div>');
-        }
-    })
-});
+        <script type="text/javascript" charset="utf-8" src="phonegap-1.2.0.js"></script>
+        <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+        <script type="text/javascript" charset="utf-8" src="js/index.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <script type="text/javascript" charset="utf-8">
+    // A button will call this function
+    //
+            $(function() {
+                app.initialize();
+                function setCity(city){
+                    localStorage.userCity=city;
+                    window.location.href="categorias.html";
+                }
+                if (!localStorage.userCity) {
+                    $.post('http://directel.mx/acciones/serviceCiudades', function(e) {
+                        var obj = jQuery.parseJSON(e);
+                        for (var i in obj) {
 
+                            $('#ciudadCanvas').append('<div class="cityItem" data-city="' + obj[i].id + '">' + obj[i].nombre + '<div class="ballnext"></div></div>');
+                        }
+                        $('.cityItem').on('click',function(){
+                            setCity($(this).attr('data-city'));
+                        });
+                    })
+                }else{
+                    window.location.href="categorias.html";
+                }
+            });
+            /*http://appzventure.com/ios-7-concept-designs-future-iphone/*/
 
-    </script>
-  </head>
-  <body style="background: url(img/bg.png); text-align: center;">
+        </script>
+    </head>
+    <body style="background: url(img/bg.png); text-align: center;">
 
-<img style=" margin-top: 70px; max-width: 100%; width: 200px;" src="img/logo_directel.png">
-<div id="ciudadCanvas"></div>
-  </body>
+        <img style=" margin-top: 70px; max-width: 100%; width: 200px;" src="img/logo_directel.png">
+        <div id="ciudadCanvas"></div>
+    </body>
 </html>
