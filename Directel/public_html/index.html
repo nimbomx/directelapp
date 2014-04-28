@@ -50,7 +50,7 @@
                         cats=true;
                         var obj = jQuery.parseJSON(e);
                         for (var i in obj) {
-                            $('#categoriasCanvas').append('<div class="catItem" data-city="' + obj[i].id + '"><img src="img/logo_' + obj[i].url + '.png">' + obj[i].nombre + '<div>' + obj[i].secciones + '</div><div class="ballnext"></div></div>');
+                            $('#categoriasCanvas').append('<div class="catItem" data-city="' + obj[i].id + '"><img src="img/logo_' + obj[i].id + '.png">' + obj[i].nombre + '<div class="secc">' + obj[i].secciones + '</div><div class="ballnext"></div></div>');
                         }
                         $('.catItem').on('click', function() {
                             getcat()
@@ -91,7 +91,7 @@
                 <div style="position: absolute; bottom: 3px; right: 10px; font-size: 11px" id="city"></div>
             </div>
             <div class="seccion" id="categorias">
-                <table style="width: 100%; height: 100%;">
+                <table style="width: 100%; max-width: 100%; height: 100%;">
                     <tr><td>
                             <div id="categoriasCanvas"></div>
                         </td></tr>
