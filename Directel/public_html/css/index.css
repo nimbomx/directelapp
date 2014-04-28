@@ -142,6 +142,25 @@ h1 {
 #ciudades{
     top: 0px;
 }
+.backBtn{
+    padding-left: 40px;
+    background: transparent;
+    border:none;
+    color: #fff;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+}
+.ballprev{
+    background: rgba(0,0,0,.5) url('../img/icons.png') -142px 1px;
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    margin-top: -11px;
+    border-radius: 22px;
+}
 .ballnext{
     background: rgba(0,0,0,.5) url('../img/icons.png') -106px 1px;
     width: 22px;
@@ -153,12 +172,16 @@ h1 {
     border-radius: 22px;
 }
 
-#ciudadCanvas, #categoriasCanvas ,#seccionesCanvas{
+#ciudadCanvas, #categoriasCanvas ,#seccionesCanvas,#resultadosCanvas,#anuncioCanvas{
 
     width: 90%; 
     margin: auto;
     margin-top: 20px;
     
+}
+a{
+    text-decoration: none;
+    color: #333;
 }
 .item{
 
