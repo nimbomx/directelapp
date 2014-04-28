@@ -13,17 +13,17 @@
             // A button will call this function
             function changeCity() {
                 localStorage.removeItem("userCity");
-                $('#ciudades').animate({'right': '0%'});
-                $('#categorias').animate({'right': '-100%'});
-                $('#topbar').animate({'top': -50});
+                $('#ciudades').css({'right': '0%'});
+                $('#categorias').css({'right': '-100%'});
+                $('#topbar').css({'top': -50});
                 loadCity();
             }
             function setCity(city,cityname) {
                 localStorage.userCity = city;
                 localStorage.userCityName = cityname;
-                $('#ciudades').animate({'right': '100%'});
-                $('#categorias').animate({'right': '0%'});
-                $('#topbar').animate({'top': 0});
+                $('#ciudades').css({'right': '100%'});
+                $('#categorias').css({'right': '0%'});
+                $('#topbar').css({'top': 0});
                 
                 loadCat();
             }
@@ -50,7 +50,7 @@
                         cats=true;
                         var obj = jQuery.parseJSON(e);
                         for (var i in obj) {
-                            $('#categoriasCanvas').append('<div class="catItem" data-city="' + obj[i].id + '"><img src="img/logo_' + obj[i].id + '.png">' + obj[i].nombre + '<div class="secc">' + obj[i].secciones + '</div><div class="ballnext"></div></div>');
+                            $('#categoriasCanvas').append('<div class="catItem" data-city="' + obj[i].id + '"><div style=" padding: 8px 12px; padding-top: 12px;"><img src="img/logo_' + obj[i].id + '.png">' + obj[i].nombre + '<div class="secc">' + obj[i].secciones + '</div><div class="ballnext"></div></div></div>');
                         }
                         $('.catItem').on('click', function() {
                             getcat()
@@ -61,12 +61,12 @@
             $(function() {
                 app.initialize();
                 if (!localStorage.userCity) {
-                    $('#ciudades').animate({'right': '0%'});
+                    $('#ciudades').css({'right': '0%'});
                     loadCity();
                 } else {
-                    $('#topbar').animate({'top': 0});
+                    $('#topbar').css({'top': 0});
                     $('#ciudades').css({'right': '100%'});
-                    $('#categorias').animate({'right': '0%'});
+                    $('#categorias').css({'right': '0%'});
                     loadCat();
                 }
             });
