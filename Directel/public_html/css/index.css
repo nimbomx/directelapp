@@ -153,11 +153,12 @@ h1 {
     border-radius: 22px;
 }
 
-#ciudadCanvas, #categoriasCanvas{
+#ciudadCanvas, #categoriasCanvas ,#seccionesCanvas{
 
-    width: 80%; 
+    width: 90%; 
     margin: auto;
     margin-top: 20px;
+    
 }
 .item{
 
@@ -242,5 +243,40 @@ h1 {
     border-radius: 5px 5px 0px 0px;
 }
 .catItem:last-child{
+    border-radius:  0px 0px 5px 5px;
+}
+
+
+.secItem{
+    position: relative;
+    padding: 8px 20px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 16px;
+    background: #feffff; /* Old browsers */
+    background: -moz-linear-gradient(top,  #feffff 0%, #eaeaea 35%, #e5e5e5 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#feffff), color-stop(35%,#eaeaea), color-stop(100%,#e5e5e5)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #feffff 0%,#eaeaea 35%,#e5e5e5 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #feffff 0%,#eaeaea 35%,#e5e5e5 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #feffff 0%,#eaeaea 35%,#e5e5e5 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #feffff 0%,#eaeaea 35%,#e5e5e5 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+    box-shadow: 0 0 10px rgba(0,0,0,.3);
+}
+.secItem:hover{
+    background: #eaeaea; /* Old browsers */
+    background: -moz-linear-gradient(top,  #eaeaea 0%, #bfbfbf 35%, #cecece 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaeaea), color-stop(35%,#bfbfbf), color-stop(100%,#cecece)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #eaeaea 0%,#bfbfbf 35%,#cecece 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #eaeaea 0%,#bfbfbf 35%,#cecece 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #eaeaea 0%,#bfbfbf 35%,#cecece 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #eaeaea 0%,#bfbfbf 35%,#cecece 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaeaea', endColorstr='#cecece',GradientType=0 ); /* IE6-9 */
+    box-shadow: 0 0 10px rgba(0,0,0,.5);
+}
+.secItem:first-child{
+    border-radius: 5px 5px 0px 0px;
+}
+.secItem:last-child{
     border-radius:  0px 0px 5px 5px;
 }

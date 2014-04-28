@@ -15,48 +15,66 @@
                 localStorage.removeItem("userCity");
                 $('#ciudades').css({'right': '0%'});
                 $('#categorias').css({'right': '-100%'});
+                $('#secciones').css({'right': '-100%'});
                 $('#topbar').css({'top': -50});
                 loadCity();
             }
-            function setCity(city,cityname) {
+            function setCity(city, cityname) {
                 localStorage.userCity = city;
                 localStorage.userCityName = cityname;
                 $('#ciudades').css({'right': '100%'});
                 $('#categorias').css({'right': '0%'});
+                $('#secciones').css({'right': '-100%'});
                 $('#topbar').css({'top': 0});
-                
                 loadCat();
             }
             function loadCity() {
-                
                 if (!cities) {
                     $.post('http://directel.mx/acciones/serviceCiudades', function(e) {
-                        cities=true;
+                        cities = true;
                         var obj = jQuery.parseJSON(e);
                         for (var i in obj) {
                             $('#ciudadCanvas').append('<div class="cityItem" data-city="' + obj[i].id + '">' + obj[i].nombre + '<div class="ballnext"></div></div>');
                         }
                         $('.cityItem').on('click', function() {
-                            setCity($(this).attr('data-city'),$(this).text());
+                            setCity($(this).attr('data-city'), $(this).text());
                         });
                     });
                 }
             }
             function loadCat() {
                 $('#city').html(localStorage.userCityName);
-                
                 if (!cats) {
                     $.post('http://directel.mx/acciones/serviceCategorias', function(e) {
-                        cats=true;
+                        cats = true;
                         var obj = jQuery.parseJSON(e);
                         for (var i in obj) {
-                            $('#categoriasCanvas').append('<div class="catItem" data-city="' + obj[i].id + '"><div style=" padding: 8px 12px; padding-top: 12px;"><img src="img/logo_' + obj[i].id + '.png">' + obj[i].nombre + '<div class="secc">' + obj[i].secciones + '</div><div class="ballnext"></div></div></div>');
+                            $('#categoriasCanvas').append('<a href="#"><div class="catItem" data-city="' + obj[i].id + '"><div style=" padding: 8px 12px; padding-top: 12px;"><img src="img/logo_' + obj[i].id + '.png">' + obj[i].nombre + '<div class="secc">' + obj[i].secciones + '</div><div class="ballnext"></div></div></div></a>');
                         }
                         $('.catItem').on('click', function() {
-                            getcat()
+                            getcat($(this).find('.secc').text());
                         });
                     });
                 }
+            }
+            function getcat(sec) {
+                $('#categorias').css({'right': '100%'});
+                $('#secciones').css({'right': '0%'});
+                secciones = sec.split('|');
+                secciones.sort();
+                for (var i in secciones) {
+                    $.post('http://directel.mx/acciones/serviceSeccion', {
+                        sec: secciones[i]
+                    }, function(e) {
+                        var obj = jQuery.parseJSON(e);
+                        $('#seccionesCanvas').append('<div class="secItem" data-id="' + obj.id + '"><div style=" padding: 8px 12px; padding-top: 12px;">' + obj.nombre + '<div class="ballnext"></div></div></div>');
+
+                        /*$('.catItem').on('click', function() {
+                         getcat($(this).find('.secc').text());
+                         });*/
+                    });
+                }
+
             }
             $(function() {
                 app.initialize();
@@ -93,7 +111,14 @@
             <div class="seccion" id="categorias">
                 <table style="width: 100%; max-width: 100%; height: 100%;">
                     <tr><td>
-                            <div id="categoriasCanvas"></div>
+                            <div id="categoriasCanvas" ></div>
+                        </td></tr>
+                </table>
+            </div>
+            <div class="seccion" id="secciones">
+                <table style="width: 100%; max-width: 100%; height: 100%;">
+                    <tr><td style="vertical-align: top;">
+                            <div id="seccionesCanvas" ></div>
                         </td></tr>
                 </table>
             </div>
