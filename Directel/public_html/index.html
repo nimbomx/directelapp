@@ -126,7 +126,7 @@
                     $('#anuncioCanvas').append('<div class="shortD">' + obj.horario + '</div>');
                     $('#anuncioCanvas').append('<div class="tit">Direcci&oacute;n</div>');
                     $('#anuncioCanvas').append('<div class="direccion">' + obj.calle + ' No.' + obj.numero + '<br>' + obj.colonia + ', C.P. ' + obj.cp + '</div>');
-                    $('#anuncioCanvas').append('<a href="geo:' + coo.replace('(','').replace(')','') + '"><div class="www">mapa</div></a>');
+                    $('#anuncioCanvas').append('<a href="geo:0,0?q=' + coo.replace('(','').replace(')','') + '(' + obj.nombre + ')"><div class="www">mapa</div></a>');
                     $('#anuncioCanvas').append('<div class="telefono">' + obj.telefono + '</div>');
                     $('#anuncioCanvas').append('<div class="email">' + obj.email + '</div>');
                     $('#anuncioCanvas').append('<div class="www">' + obj.www + '</div>');
