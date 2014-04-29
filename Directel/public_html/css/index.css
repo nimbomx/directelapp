@@ -31,7 +31,7 @@ body {
     height:100%;
     margin:0px;
     padding:0px;
-    text-transform:uppercase;
+    //text-transform:uppercase;
     width:100%;
 }
 
@@ -262,15 +262,15 @@ a{
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaeaea', endColorstr='#cecece',GradientType=0 ); /* IE6-9 */
     box-shadow: 0 0 10px rgba(0,0,0,.5);
 }
-.catItem:first-child{
+a:first-child .catItem{
     border-radius: 5px 5px 0px 0px;
 }
-.catItem:last-child{
+a:last-child .catItem{
     border-radius:  0px 0px 5px 5px;
 }
 
 
-.secItem{
+.secItem,.resultItem{
     position: relative;
     padding: 8px 20px;
     text-align: left;
@@ -286,7 +286,10 @@ a{
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
     box-shadow: 0 0 10px rgba(0,0,0,.3);
 }
-.secItem:hover{
+.resultItem{
+    min-height: 60px;
+}
+.secItem:hover,.resultItem:hover{
     background: #eaeaea; /* Old browsers */
     background: -moz-linear-gradient(top,  #eaeaea 0%, #bfbfbf 35%, #cecece 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaeaea), color-stop(35%,#bfbfbf), color-stop(100%,#cecece)); /* Chrome,Safari4+ */
@@ -297,9 +300,52 @@ a{
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaeaea', endColorstr='#cecece',GradientType=0 ); /* IE6-9 */
     box-shadow: 0 0 10px rgba(0,0,0,.5);
 }
-.secItem:first-child{
+a:first-child .secItem ,a:first-child .resultItem{
     border-radius: 5px 5px 0px 0px;
 }
-.secItem:last-child{
+a:last-child  .secItem,a:last-child .resultItem{
     border-radius:  0px 0px 5px 5px;
+}
+.resultItem .secc{
+    position: absolute;
+    left: 30px;
+    right: 50px;
+    font-size: 12px;
+    font-weight: normal;
+    white-space: nowrap;
+    margin-top: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+}
+#anuncioCanvas{
+    
+}
+#anuncioCanvas .imagen{
+    max-width: 100%;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,.5);
+    margin-bottom: 10px;
+}
+#anuncioCanvas .nombre{
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+}
+#anuncioCanvas .shortD{
+    font-size: 13px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+#anuncioCanvas .tit{
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+}
+#anuncioCanvas .direccion{
+    font-size: 13px;
+    margin-bottom: 10px;
+    text-align: left;
 }

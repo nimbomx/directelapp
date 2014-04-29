@@ -10,6 +10,7 @@
         <script type="text/javascript" charset="utf-8">
             var cities = false;
             var cats = false;
+            var secs = '';
             var colors = [[0, 0, 0], [191, 27, 44], [236, 0, 140], [0, 173, 239], [249, 167, 43], [55, 171, 156], [0, 0, 0], [25, 105, 188], [128, 204, 40], [154, 3, 70], [106, 94, 80], [133, 83, 51], [130, 20, 124], [245, 122, 20], [237, 28, 36], [0, 0, 0], [29, 100, 52], [55, 171, 156]];
             // A button will call this function
             function changeCity() {
@@ -60,29 +61,77 @@
                     $('#ciudades').css({'right': '100%'});
                     $('#categorias').css({'right': '0%'});
                     $('#secciones').css({'right': '-100%'});
+                    $('#resultados').css({'right': '-100%'});
                 }
             }
             function getcat(sec, idcat, namecat) {
                 $('#categorias').css({'right': '100%'});
                 $('#secciones').css({'right': '0%'});
+                $('#resultados').css({'right': '-100%'});
+                secs = sec;
                 secciones = sec.split('|');
                 secciones.sort();
-                $('#seccionHeader').css({'background':'rgb('+colors[idcat][0]+','+colors[idcat][1]+','+colors[idcat][2]+')'})
-                $('#seccionHeader').html('<button class="backBtn" onclick="loadCat()" style="float:left;"><div class="ballprev"></div>Volver</button><img style="float:right; margin-top:-20px;" src="img/logo_' + idcat + '.png">' + namecat);
+                $('#seccionHeader').css({'background': 'rgb(' + colors[idcat][0] + ',' + colors[idcat][1] + ',' + colors[idcat][2] + ')'})
+                $('#seccionHeader').html('<button class="backBtn" onclick="loadCat()" style="float:left;"><div class="ballprev"></div>Volver</button><img style="float:right; margin-top:-21px;" src="img/logo_' + idcat + '.png">' + namecat);
                 $('#seccionesCanvas').html('');
                 for (var i in secciones) {
                     $.post('http://directel.mx/acciones/serviceSeccion', {
                         sec: secciones[i]
                     }, function(e) {
                         var obj = jQuery.parseJSON(e);
-                        $('#seccionesCanvas').append('<div class="secItem" data-id="' + obj.id + '"><div style=" padding: 8px 12px; padding-top: 12px;">' + obj.nombre + '<div class="ballnext"></div></div></div>');
-
-                        /*$('.catItem').on('click', function() {
-                         getcat($(this).find('.secc').text());
-                         });*/
+                        $('#seccionesCanvas').append('<a href="#"><div class="secItem" data-idcat="' + idcat + '" data-namecat="' + namecat + '" data-nombre="' + obj.nombre + '"><div style=" padding: 8px 12px; padding-top: 12px;">' + obj.nombre + '<div class="ballnext"></div></div></div></a>');
                     });
                 }
 
+            }
+            function getanuncios(sec, idcat, namecat) {
+                $('#categorias').css({'right': '100%'});
+                $('#secciones').css({'right': '100%'});
+                $('#resultados').css({'right': '0%'});
+                $('#resultadosHeader').css({'background': 'rgb(' + colors[idcat][0] + ',' + colors[idcat][1] + ',' + colors[idcat][2] + ')'})
+                $('#resultadosHeader').html('<button class="backBtn" onclick="getcat(\'' + secs + '\',\'' + idcat + '\',\'' + namecat + '\')" style="float:left;"><div class="ballprev"></div>Volver</button><img style="float:right; margin-top:-21px;" src="img/logo_' + idcat + '.png">' + namecat);
+                $('#resultadosCanvas').html('');
+                $.post('http://directel.mx/acciones/serviceAnuncios', {
+                    sec: sec,
+                    ciudad: localStorage.userCity
+                }, function(e) {
+                    var obj = jQuery.parseJSON(e);
+                    for (var i in obj) {
+                        $('#resultadosCanvas').append('<a><div class="resultItem" data-id="' + obj[i].id + '" data-idcat="' + idcat + '" data-namecat="' + namecat + '"><div style=" padding: 8px 12px; padding-top: 12px;">' + obj[i].nombre + '<div class="secc">' + obj[i].shortD + '</div><div class="ballnext"></div></div></div></a>');
+                    }
+                });
+            }
+            function getbanuncios() {
+                $('#categorias').css({'right': '100%'});
+                $('#secciones').css({'right': '100%'});
+                $('#resultados').css({'right': '0%'});
+                $('#anuncio').css({'right': '-100%'});
+            }
+            function getanuncio(sec, idcat, namecat) {
+                $('#categorias').css({'right': '100%'});
+                $('#secciones').css({'right': '100%'});
+                $('#resultados').css({'right': '100%'});
+                $('#anuncio').css({'right': '0%'});
+                $('#anuncioHeader').css({'background': 'rgb(' + colors[idcat][0] + ',' + colors[idcat][1] + ',' + colors[idcat][2] + ')'})
+                $('#anuncioHeader').html('<button class="backBtn" onclick="getbanuncios()" style="float:left;"><div class="ballprev"></div>Volver</button><img style="float:right; margin-top:-21px;" src="img/logo_' + idcat + '.png">' + namecat);
+                $.post('http://directel.mx/acciones/serviceAnuncio', {
+                    sec: sec
+                }, function(e) {
+                    var obj = jQuery.parseJSON(e);
+                    coo=obj.coordenadas;
+                    $('#anuncioCanvas').html('');
+                    $('#anuncioCanvas').append('<img class="imagen" src="http://directel.mx/content/img/logos/' + obj.logo + '">');
+                    $('#anuncioCanvas').append('<div class="nombre">' + obj.nombre + '</div>');
+                    $('#anuncioCanvas').append('<div class="shortD">' + obj.descripcion + '</div>');
+                    $('#anuncioCanvas').append('<div class="shortD">' + obj.horario + '</div>');
+                    $('#anuncioCanvas').append('<div class="tit">Direcci&oacute;n</div>');
+                    $('#anuncioCanvas').append('<div class="direccion">' + obj.calle + ' No.' + obj.numero + '<br>' + obj.colonia + ', C.P. ' + obj.cp + '</div>');
+                    $('#anuncioCanvas').append('<a href="geo:' + coo.replace('(','').replace(')','')) + '"><div class="www">mapa</div></a>');
+                    $('#anuncioCanvas').append('<div class="telefono">' + obj.telefono + '</div>');
+                    $('#anuncioCanvas').append('<div class="email">' + obj.email + '</div>');
+                    $('#anuncioCanvas').append('<div class="www">' + obj.www + '</div>');
+
+                });
             }
             $(function() {
                 app.initialize();
@@ -95,6 +144,14 @@
                     $('#categorias').css({'right': '0%'});
                     loadCat();
                 }
+                $('#seccionesCanvas').on('click', '.secItem', function() {
+                    getanuncios($(this).attr('data-nombre'), $(this).attr('data-idcat'), $(this).attr('data-namecat'));
+                });
+
+                $('#resultadosCanvas').on('click', '.resultItem', function() {
+                    getanuncio($(this).attr('data-id'), $(this).attr('data-idcat'), $(this).attr('data-namecat'));
+                });
+
             });
             /*http://appzventure.com/ios-7-concept-designs-future-iphone/*/
 
@@ -126,7 +183,7 @@
             <div class="seccion" id="secciones">
                 <table style="width: 100%; max-width: 100%; height: 100%;">
                     <tr><td style="vertical-align: top; height: 60px;">
-                            <div id="seccionHeader" style="height: 40px; width: 100%; color: #fff; padding-top: 20px; text-align: center; font-weight: bold; font-size: 16px;"></div>
+                            <div id="seccionHeader" style="height: 40px; width: 100%; color: #fff; padding-top: 22px; text-align: center; font-weight: bold; font-size: 16px;"></div>
                         </td></tr>
                     <tr><td style="vertical-align: top;">
                             <div id="seccionesCanvas" ></div>
@@ -135,6 +192,9 @@
             </div>
             <div class="seccion" id="resultados">
                 <table style="width: 100%; max-width: 100%; height: 100%;">
+                    <tr><td style="vertical-align: top; height: 60px;">
+                            <div id="resultadosHeader" style="height: 40px; width: 100%; color: #fff; padding-top: 22px; text-align: center; font-weight: bold; font-size: 16px;"></div>
+                        </td></tr>
                     <tr><td style="vertical-align: top;">
                             <div id="resultadosCanvas" ></div>
                         </td></tr>
@@ -142,8 +202,13 @@
             </div>
             <div class="seccion" id="anuncio">
                 <table style="width: 100%; max-width: 100%; height: 100%;">
+                    <tr><td style="vertical-align: top; height: 60px;">
+                            <div id="anuncioHeader" style="height: 40px; width: 100%; color: #fff; padding-top: 22px; text-align: center; font-weight: bold; font-size: 16px;"></div>
+                        </td></tr>
                     <tr><td style="vertical-align: top;">
-                            <div id="anuncioCanvas" ></div>
+                            <div id="anuncioCanvas" >
+
+                            </div>
                         </td></tr>
                 </table>
             </div>
