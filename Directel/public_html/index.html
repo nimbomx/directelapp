@@ -118,18 +118,37 @@
                     sec: sec
                 }, function(e) {
                     var obj = jQuery.parseJSON(e);
-                    coo=obj.coordenadas;
+                    coo = obj.coordenadas;
+                    img = obj.logo;
+
+                    if (obj.logo == '')
+                        img = 'default.jpg';
                     $('#anuncioCanvas').html('');
-                    $('#anuncioCanvas').append('<img class="imagen" src="http://directel.mx/content/img/logos/' + obj.logo + '">');
+                    $('#anuncioCanvas').append('<img class="imagen" src="http://directel.mx/content/img/logos/' + img + '">');
                     $('#anuncioCanvas').append('<div class="nombre">' + obj.nombre + '</div>');
                     $('#anuncioCanvas').append('<div class="shortD">' + obj.descripcion + '</div>');
                     $('#anuncioCanvas').append('<div class="shortD">' + obj.horario + '</div>');
                     $('#anuncioCanvas').append('<div class="tit">Direcci&oacute;n</div>');
                     $('#anuncioCanvas').append('<div class="direccion">' + obj.calle + ' No.' + obj.numero + '<br>' + obj.colonia + ', C.P. ' + obj.cp + '</div>');
-                    $('#anuncioCanvas').append('<a href="geo:0,0?q=' + coo.replace('(','').replace(')','') + '(' + obj.nombre + ')"><div class="www">mapa</div></a>');
-                    $('#anuncioCanvas').append('<div class="telefono">' + obj.telefono + '</div>');
+                    $('#anuncioCanvas').append('<a href="geo:0,0?q=' + coo.replace('(', '').replace(')', '') + '(' + obj.nombre + ')"><div class="www">ver mapa</div></a>');
+                    tels = obj.telefono.split(';');
+                    for (x in tels) {
+                        tel = tels[x].split(',');
+                        ext = '';
+                        if (tel[3] != '')
+                            ext = 'ext: ' + tel[3];
+                        $('#anuncioCanvas').append('<div class="telefono"><b>' + tel[0] + ': </b>(' + tel[1] + ') ' + tel[2] + '' + ext + '</div>');
+                    }
+
                     $('#anuncioCanvas').append('<div class="email">' + obj.email + '</div>');
-                    $('#anuncioCanvas').append('<div class="www">' + obj.www + '</div>');
+                    wwws = obj.www.split(';');
+                    for (x in wwws) {
+                        www = wwws[x].split(',');
+                        if (www[1] !== '') {
+                            $('#anuncioCanvas').append('<div class="www"><b>' + www[0] + ': </b>' + www[1] + '</div>');
+                        }
+                    }
+
 
                 });
             }
