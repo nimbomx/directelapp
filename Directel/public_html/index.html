@@ -3,11 +3,31 @@
     <head>
         <title>DirecTEL</title>
 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <link rel="apple-touch-icon" href="res/icon/ios/icon-57.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="res/icon/ios/icon-72.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="res/icon/ios/icon@2x.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="res/icon/ios/icon-72@2x.png" />
+
+
         <script type="text/javascript" charset="utf-8" src="phonegap-1.2.0.js"></script>
         <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
         <script type="text/javascript" charset="utf-8" src="js/index.js"></script>
         <link rel="stylesheet" type="text/css" href="css/index.css">
         <script type="text/javascript" charset="utf-8">
+            if (window.navigator.standalone) {
+                //webapp instalada
+            }
+            var os = '';
+            $(document).ready(function() {
+                var ua = navigator.userAgent;
+                if (ua.match(/(iPhone|iPod|iPad)/)) {
+                    os = 'ios';
+                }
+            });
+
             var cities = false;
             var cats = false;
             var secs = '';
@@ -112,8 +132,14 @@
                 $('#secciones').css({'right': '100%'});
                 $('#resultados').css({'right': '100%'});
                 $('#anuncio').css({'right': '0%'});
-                $('#anuncioHeader').css({'background': 'rgb(' + colors[idcat][0] + ',' + colors[idcat][1] + ',' + colors[idcat][2] + ')'})
-                $('#anuncioHeader').html('<button class="backBtn" onclick="getbanuncios()" style="float:left;"><div class="ballprev"></div>Volver</button><img style="float:right; margin-top:-21px;" src="img/logo_' + idcat + '.png">' + namecat);
+                if (idcat == 0) {
+                    $('#anuncioHeader').css({'background': 'transparent'})
+                    $('#anuncioHeader').html('<button class="backBtn" onclick="getbanuncios()" style="float:left; color:#333;"><div class="ballprev"></div>Volver</button>');
+                } else {
+                    $('#anuncioHeader').css({'background': 'rgb(' + colors[idcat][0] + ',' + colors[idcat][1] + ',' + colors[idcat][2] + ')'})
+                    $('#anuncioHeader').html('<button class="backBtn" onclick="getbanuncios()" style="float:left;"><div class="ballprev"></div>Volver</button><img style="float:right; margin-top:-21px;" src="img/logo_' + idcat + '.png">' + namecat);
+                }
+
                 $.post('http://directel.mx/acciones/serviceAnuncio', {
                     sec: sec
                 }, function(e) {
@@ -129,8 +155,41 @@
                     $('#anuncioCanvas').append('<div class="shortD">' + obj.descripcion + '</div>');
                     $('#anuncioCanvas').append('<div class="shortD">' + obj.horario + '</div>');
                     $('#anuncioCanvas').append('<div class="tit">Direcci&oacute;n</div>');
-                    $('#anuncioCanvas').append('<div class="direccion">' + obj.calle + ' No.' + obj.numero + '<br>' + obj.colonia + ', C.P. ' + obj.cp + '</div>');
-                    $('#anuncioCanvas').append('<a href="geo:0,0?q=' + coo.replace('(', '').replace(')', '') + '(' + obj.nombre + ')"><div class="www">ver mapa</div></a>');
+                    colonia = '';
+                    if (obj.colonia != '' && obj.colonia != '.')
+                        colonia = obj.colonia + ', ';
+                    cp = '';
+                    if (obj.cp != 0)
+                        cp = 'C.P. ' + obj.cp + '';
+                    int = '';
+                    if (obj.interior != '')
+                        int = ' int. ' + obj.interior + '';
+                    obs = '';
+                    if (obj.observacion != '')
+                        obs = '<br>' + obj.observacion + '';
+
+                    $('#anuncioCanvas').append('<div class="direccion">' + obj.calle + ' No.' + obj.numero + int + obs + '<br>' + colonia + cp + '</div>');
+
+                    if (coo != '') {
+                        if (os == 'ios') {
+                            $('#anuncioCanvas').append('<a href="http://maps.apple.com/?q=' + coo.replace('(', '').replace(')', '') + '"><div class="maplink">ver mapa</div></a>');
+
+
+                        } else {
+                            $('#anuncioCanvas').append('<a href="geo:0,0?q=' + coo.replace('(', '').replace(')', '') + '(' + obj.nombre + ')"><div class="maplink">ver mapa</div></a>');
+
+                        }
+                    } else {
+                        if (os == 'ios') {
+                            $('#anuncioCanvas').append('<a href="http://maps.apple.com/?q=calle ' + obj.calle + ' ' + obj.numero + ' ' + obj.colonia + ', ' + localStorage.userCityName + '"><div class="maplink">ver mapa</div></a>');
+
+                        } else {
+                            $('#anuncioCanvas').append('<a href="geo:0,0?q= calle ' + obj.calle + ' ' + obj.numero + ' ' + obj.colonia + ', ' + localStorage.userCityName + '(' + obj.nombre + ')"><div class="maplink">ver mapa</div></a>');
+
+                        }
+                    }
+
+
                     tels = obj.telefono.split(';');
                     for (x in tels) {
                         tel = tels[x].split(',');
@@ -152,6 +211,26 @@
 
                 });
             }
+            function search() {
+                sec = $('#search').val();
+                $('#searchCanvas').fadeOut();
+                $('#categorias').css({'right': '100%'});
+                $('#secciones').css({'right': '100%'});
+                $('#resultados').css({'right': '0%'});
+
+                $('#resultadosHeader').html('');
+                $('#resultadosCanvas').html('');
+                $.post('http://directel.mx/acciones/serviceAnuncios', {
+                    sec: sec,
+                    ciudad: localStorage.userCity
+                }, function(e) {
+
+                    var obj = jQuery.parseJSON(e);
+                    for (var i in obj) {
+                        $('#resultadosCanvas').append('<a><div class="resultItem" data-id="' + obj[i].id + '" data-idcat="' + 0 + '" data-namecat="' + sec + '"><div style=" padding: 8px 12px; padding-top: 12px;">' + obj[i].nombre + '<div class="secc">' + obj[i].shortD + '</div><div class="ballnext"></div></div></div></a>');
+                    }
+                });
+            }
             $(function() {
                 app.initialize();
                 if (!localStorage.userCity) {
@@ -163,6 +242,20 @@
                     $('#categorias').css({'right': '0%'});
                     loadCat();
                 }
+                $('#search').on('keyup', function(event) {
+                    event = event || window.event;
+                    if (event.keyCode == 13 || event.which == 13) {
+                        search();
+                    }
+                });
+                $('#searchShow').on('click', function() {
+                    $('#searchCanvas').fadeIn();
+                    $('#search').focus();
+                });
+                $('#search').on('blur', function() {
+                    $('#searchCanvas').fadeOut();
+                })
+                $('#searchBtn').on('click', search);
                 $('#seccionesCanvas').on('click', '.secItem', function() {
                     getanuncios($(this).attr('data-nombre'), $(this).attr('data-idcat'), $(this).attr('data-namecat'));
                 });
@@ -190,7 +283,19 @@
             <div id="topbar">
                 <img onclick="changeCity()" style="position: absolute; left: 10px; top: 10px; height: 30px;" src="img/ciudad.png">
                 <img alt="Directel" style=" height: 40px; margin: 5px;" src="img/logo_directel.png">
-                <div style="position: absolute; bottom: 3px; right: 10px; font-size: 11px" id="city"></div>
+                <div style="position: absolute; bottom: -18px; left: 10px; font-size: 11px" id="city"></div>
+
+
+            </div>
+            <div id="searchShow" style="width: 50px; height: 50px;  z-index: 100; position: fixed; right: 0px; top:10px;">
+                <img  style=" margin: 5px;" src="img/lupitagris.png">
+            </div>
+            <div id="searchCanvas" style="position: absolute; display: none; right: 0px; top: 50px; height: 50px; padding: 0px 10px; box-shadow: 0 0 5px rgba(0,0,0,.6); z-index: 90; border-radius: 5px; background: rgba(255,255,255,.9);">
+                <table style="height: 100%;">
+                    <tr><td>
+                            <input style="padding-left: 10px; width: 200px; padding-right: 10px; height: 30px;" id="search"><div id="searchBtn" style="float: right; background: rgb(25, 105, 188) ; border-radius: 5px; margin-left: 20px;"><img style="margin: 10px;" src="img/lupita.png">&nbsp; </div>
+                        </td></tr>
+                </table>
             </div>
             <div class="seccion" id="categorias">
                 <table style="width: 100%; max-width: 100%; height: 100%;">

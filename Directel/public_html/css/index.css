@@ -349,3 +349,17 @@ a:last-child  .secItem,a:last-child .resultItem{
     margin-bottom: 10px;
     text-align: left;
 }
+
+.maplink{
+    margin: 20px;
+    font-weight: bold;
+}
+
+#searchBtn{
+
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
