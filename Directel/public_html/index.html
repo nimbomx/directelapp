@@ -66,6 +66,8 @@
             }
             function loadCat() {
                 $('#city').html(localStorage.userCityName);
+                $('#cityBtn').fadeIn();
+                $('#city').animate({'bottom':-18});
                 if (!cats) {
                     $.post('http://directel.mx/acciones/serviceCategorias', function(e) {
                         cats = true;
@@ -85,6 +87,8 @@
                 }
             }
             function getcat(sec, idcat, namecat) {
+                $('#cityBtn').fadeOut();
+                $('#city').animate({'bottom':4});
                 $('#categorias').css({'right': '100%'});
                 $('#secciones').css({'right': '0%'});
                 $('#resultados').css({'right': '-100%'});
@@ -212,6 +216,8 @@
                 });
             }
             function search() {
+                $('#cityBtn').fadeOut();
+                $('#city').animate({'bottom':4});
                 sec = $('#search').val();
                 $('#searchCanvas').fadeOut();
                 $('#categorias').css({'right': '100%'});
@@ -281,8 +287,8 @@
                 </table>
             </div>
             <div id="topbar">
-                <img onclick="changeCity()" style="position: absolute; left: 10px; top: 10px; height: 30px;" src="img/ciudad.png">
-                <img alt="Directel" style=" height: 40px; margin: 5px;" src="img/logo_directel.png">
+                <img id="cityBtn" onclick="changeCity()" style="position: absolute; left: 10px; top: 10px; height: 30px;" src="img/ciudad.png">
+                <img onclick="loadCat()" alt="Directel" style=" height: 40px; margin: 5px;" src="img/logo_directel.png">
                 <div style="position: absolute; bottom: -18px; left: 10px; font-size: 11px" id="city"></div>
 
 
