@@ -144,7 +144,7 @@
                     $('#anuncioHeader').html('<button class="backBtn" onclick="getbanuncios()" style="float:left;"><div class="ballprev"></div>Volver</button><img style="float:right; margin-top:-21px;" src="img/logo_' + idcat + '.png">' + namecat);
                 }
 
-                $.post('http://directel.mx/acciones/serviceAnuncio', {
+                $.get('http://directel.mx/acciones/serviceAnuncio', {
                     sec: sec
                 }, function(e) {
                     var obj = jQuery.parseJSON(e);
