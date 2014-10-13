@@ -54,7 +54,7 @@
             }
             function loadCity() {
                 if (!cities) {
-                    $.post('http://directel.mx/acciones/serviceCiudades', function(e) {
+                    $.get('http://directel.mx/acciones/serviceCiudades', function(e) {
                         cities = true;
                         var obj = jQuery.parseJSON(e);
                         for (var i in obj) {
@@ -69,7 +69,7 @@
             function loadCat() {
                 $('#city').html(localStorage.userCityName);
                 if (!cats) {
-                    $.post('http://directel.mx/acciones/serviceCategorias', function(e) {
+                    $.get('http://directel.mx/acciones/serviceCategorias', function(e) {
                         cats = true;
                         var obj = jQuery.parseJSON(e);
                         for (var i in obj) {
@@ -99,7 +99,7 @@
                 $('#seccionHeader').html('<button class="backBtn" onclick="loadCat()" style="float:left;"><div class="ballprev"></div>Volver</button><img style="float:right; margin-top:-21px;" src="img/logo_' + idcat + '.png">' + namecat);
                 $('#seccionesCanvas').html('');
                 for (var i in secciones) {
-                    $.post('http://directel.mx/acciones/serviceSeccion', {
+                    $.get('http://directel.mx/acciones/serviceSeccion', {
                         sec: secciones[i]
                     }, function(e) {
                         var obj = jQuery.parseJSON(e);
@@ -115,7 +115,7 @@
                 $('#resultadosHeader').css({'background': 'rgb(' + colors[idcat][0] + ',' + colors[idcat][1] + ',' + colors[idcat][2] + ')'})
                 $('#resultadosHeader').html('<button class="backBtn" onclick="getcat(\'' + secs + '\',\'' + idcat + '\',\'' + namecat + '\')" style="float:left;"><div class="ballprev"></div>Volver</button><img style="float:right; margin-top:-21px;" src="img/logo_' + idcat + '.png">' + namecat);
                 $('#resultadosCanvas').html('');
-                $.post('http://directel.mx/acciones/serviceAnuncios', {
+                $.get('http://directel.mx/acciones/serviceAnuncios', {
                     sec: sec,
                     ciudad: localStorage.userCity
                 }, function(e) {
@@ -224,7 +224,7 @@
 
                 $('#resultadosHeader').html('');
                 $('#resultadosCanvas').html('');
-                $.post('http://directel.mx/acciones/serviceAnuncios', {
+                $.get('http://directel.mx/acciones/serviceAnuncios', {
                     sec: sec,
                     ciudad: localStorage.userCity
                 }, function(e) {
